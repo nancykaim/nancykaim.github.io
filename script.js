@@ -1,13 +1,15 @@
 // List of sticker images to pick from at random.
 // Add or remove paths here to change what can show up.
 const STICKER_PATHS = [
-  "image/icon1.png",
-  "image/icon2.png",
-  "image/icon3.png",
-  "image/icon4.png",
-  "image/icon5.png",
-  "image/icon6.png",
-  "image/icon7.png",
+  "image/Icon/Icon1.png",
+  "image/Icon/Icon2.png",
+  "image/Icon/Icon3.png",
+  "image/Icon/Icon4.png",
+  "image/Icon/Icon5.png",
+  "image/Icon/Icon6.png",
+  "image/Icon/Icon7.png",
+  "image/Icon/Icon8.png",
+  "image/Icon/Icon9.png",
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
