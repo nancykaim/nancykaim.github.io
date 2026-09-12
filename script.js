@@ -1,15 +1,15 @@
 // List of sticker images to pick from at random.
 // Add or remove paths here to change what can show up.
 const STICKER_PATHS = [
-  "https://github.com/nancykaim/nancykaim.github.io/blob/main/image/Icon/Icon1.png",
-  "https://github.com/nancykaim/nancykaim.github.io/blob/main/image/Icon/Icon2.png",
-  "https://github.com/nancykaim/nancykaim.github.io/blob/main/image/Icon/Icon3.png",
-  "https://github.com/nancykaim/nancykaim.github.io/blob/main/image/Icon/Icon4.png",
-  "https://github.com/nancykaim/nancykaim.github.io/blob/main/image/Icon/Icon5.png",
-  "https://github.com/nancykaim/nancykaim.github.io/blob/main/image/Icon/Icon6.png",
-  "https://github.com/nancykaim/nancykaim.github.io/blob/main/image/Icon/Icon7.png",
-  "https://github.com/nancykaim/nancykaim.github.io/blob/main/image/Icon/Icon8.png",
-  "https://github.com/nancykaim/nancykaim.github.io/blob/main/image/Icon/Icon9.png",
+  "./image/Icon/Icon1.png",
+  "./image/Icon/Icon2.png",
+  "./image/Icon/Icon3.png",
+  "./image/Icon/Icon4.png",
+  "./image/Icon/Icon5.png",
+  "./image/Icon/Icon6.png",
+  "./image/Icon/Icon7.png",
+  "./image/Icon/Icon8.png",
+  "./image/Icon/Icon9.png"
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
