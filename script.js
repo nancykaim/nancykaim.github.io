@@ -20,108 +20,138 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+/* =========================
+   Interactive Scrolling Star Field
+   ========================= */
+
 const starField = document.getElementById("star-field");
 
-const stars = [];
-const STAR_COUNT = 55;
+if (starField) {
+  const STAR_COUNT = 70;
+  const stars = [];
 
-let mouse = {
-  x: -1000,
-  y: -1000
-};
+  let mouseX = -1000;
+  let mouseY = -1000;
 
-// Create stars
-for (let i = 0; i < STAR_COUNT; i++) {
-  const star = document.createElement("div");
-  star.className = "star";
+  const interactionRadius = 130;
 
-  const x = Math.random() * window.innerWidth;
-  const y = Math.random() * window.innerHeight;
+  function getPageSize() {
+    return {
+      width: Math.max(
+        document.documentElement.scrollWidth,
+        document.body.scrollWidth
+      ),
+      height: Math.max(
+        document.documentElement.scrollHeight,
+        document.body.scrollHeight
+      )
+    };
+  }
 
-  starField.appendChild(star);
+  function resizeStarField() {
+    const pageSize = getPageSize();
 
-  stars.push({
-    element: star,
+    starField.style.width = `${pageSize.width}px`;
+    starField.style.height = `${pageSize.height}px`;
+  }
 
-    x: x,
-    y: y,
+  resizeStarField();
 
-    // Starting position
-    baseX: x,
-    baseY: y,
+  /* Create stars across the entire page */
+  for (let i = 0; i < STAR_COUNT; i++) {
+    const star = document.createElement("div");
 
-    // Tiny floating movement
-    vx: (Math.random() - 0.5) * 0.15,
-    vy: (Math.random() - 0.5) * 0.15,
+    star.className = "star";
 
-    // Different stars have slightly different sizes
-    size: Math.random() * 4 + 2
+    const pageSize = getPageSize();
+
+    const starData = {
+      element: star,
+
+      x: Math.random() * pageSize.width,
+      y: Math.random() * pageSize.height,
+
+      vx: (Math.random() - 0.5) * 0.18,
+      vy: (Math.random() - 0.5) * 0.18,
+
+      size: 2 + Math.random() * 4
+    };
+
+    star.style.width = `${starData.size}px`;
+    star.style.height = `${starData.size}px`;
+
+    star.style.animationDelay = `${Math.random() * 2.5}s`;
+
+    starField.appendChild(star);
+
+    stars.push(starData);
+  }
+
+  /* Track cursor relative to the whole document */
+  document.addEventListener("mousemove", (event) => {
+    mouseX = event.clientX + window.scrollX;
+    mouseY = event.clientY + window.scrollY;
   });
 
-  star.style.width = `${stars[i].size}px`;
-  star.style.height = `${stars[i].size}px`;
-  star.style.animationDelay = `${Math.random() * 2.5}s`;
+  /* Reset interaction when cursor leaves the page */
+  document.addEventListener("mouseleave", () => {
+    mouseX = -1000;
+    mouseY = -1000;
+  });
+
+  function animateStars() {
+    const pageSize = getPageSize();
+
+    stars.forEach((star) => {
+      /* Gentle natural movement */
+      star.x += star.vx;
+      star.y += star.vy;
+
+      /* Cursor interaction */
+      const dx = star.x - mouseX;
+      const dy = star.y - mouseY;
+
+      const distance = Math.sqrt(dx * dx + dy * dy);
+
+      if (distance < interactionRadius && distance > 0) {
+        const force =
+          (interactionRadius - distance) / interactionRadius;
+
+        star.x += (dx / distance) * force * 2.5;
+        star.y += (dy / distance) * force * 2.5;
+      }
+
+      /* Bounce gently within the entire document */
+      if (star.x <= 0 || star.x >= pageSize.width) {
+        star.vx *= -1;
+        star.x = Math.max(0, Math.min(star.x, pageSize.width));
+      }
+
+      if (star.y <= 0 || star.y >= pageSize.height) {
+        star.vy *= -1;
+        star.y = Math.max(0, Math.min(star.y, pageSize.height));
+      }
+
+      /*
+       * The star coordinates are document coordinates,
+       * so they naturally move with the page when scrolling.
+       */
+      star.element.style.transform =
+        `translate(${star.x}px, ${star.y}px)`;
+    });
+
+    requestAnimationFrame(animateStars);
+  }
+
+  animateStars();
+
+  /* Recalculate when page dimensions change */
+  window.addEventListener("resize", resizeStarField);
+
+  window.addEventListener("load", () => {
+    resizeStarField();
+  });
 }
-
-// Track mouse
-window.addEventListener("mousemove", (event) => {
-  mouse.x = event.clientX;
-  mouse.y = event.clientY;
-});
-
-// When mouse leaves the page
-window.addEventListener("mouseleave", () => {
-  mouse.x = -1000;
-  mouse.y = -1000;
-});
-
-function animate() {
-
-  stars.forEach((star) => {
-
-    // Tiny natural floating movement
-    star.baseX += star.vx;
-    star.baseY += star.vy;
-
-    // Wrap around screen
-    if (star.baseX < -20) star.baseX = window.innerWidth + 20;
-    if (star.baseX > window.innerWidth + 20) star.baseX = -20;
-
-    if (star.baseY < -20) star.baseY = window.innerHeight + 20;
-    if (star.baseY > window.innerHeight + 20) star.baseY = -20;
-
-    // Distance from mouse
-    const dx = star.baseX - mouse.x;
-    const dy = star.baseY - mouse.y;
-
-    const distance = Math.sqrt(dx * dx + dy * dy);
-
-    const interactionRadius = 110;
-
-    let pushX = 0;
-    let pushY = 0;
-
-    // Push stars away from mouse
-    if (distance < interactionRadius) {
-
-      const force =
-        (interactionRadius - distance) / interactionRadius;
-
-      // Prevent division by zero
-      const safeDistance = Math.max(distance, 1);
-
-      pushX = (dx / safeDistance) * force * 35;
-      pushY = (dy / safeDistance) * force * 35;
-    }
-
-    // Smooth movement
-    star.x += (star.baseX + pushX - star.x) * 0.08;
-    star.y += (star.baseY + pushY - star.y) * 0.08;
-
-    star.element.style.transform =
-      `translate(${star.x}px, ${star.y}px)`;
-  });
-
   requestAnimationFrame(animate);
 }
 
