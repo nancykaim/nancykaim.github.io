@@ -616,11 +616,31 @@ footer.site .wrap {
   position: absolute;
   width: 5px;
   height: 5px;
-  background: rgba(255, 255, 255, 0.8);
-  transform: translate(-50%, -50%);
+
+  background: #ffffff;
   border-radius: 50%;
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.45);
-  will-change: transform;
+
+  transform: translate(-50%, -50%);
+
+  box-shadow:
+    0 0 4px #ffffff,
+    0 0 8px #C7CEFF,
+    0 0 14px #AEB8FF,
+    0 0 22px rgba(174, 184, 255, 0.45);
+
+  will-change: transform, opacity;
+
+  animation: twinkle 2.5s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.45;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }
 
 .hero-page,
