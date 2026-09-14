@@ -603,7 +603,6 @@ footer.site .wrap {
 /* =========================
    Interactive Star Field
    ========================= */
-
 #star-field {
   position: absolute;
   top: 0;
@@ -650,4 +649,10 @@ footer.site .wrap {
   50% {
     opacity: 1;
   }
+}
+
+.hero-page,
+.site {
+  position: relative;
+  z-index: 1;
 }
