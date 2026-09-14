@@ -60,6 +60,7 @@ for (let i = 0; i < STAR_COUNT; i++) {
 
   star.style.width = `${stars[i].size}px`;
   star.style.height = `${stars[i].size}px`;
+  star.style.animationDelay = `${Math.random() * 2.5}s`;
 }
 
 // Track mouse
